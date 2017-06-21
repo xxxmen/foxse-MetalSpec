@@ -1,0 +1,11 @@
+﻿<Window x:Class="MetalSpec.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    <Grid>
+        <StackPanel>
+            <Button Content="обновить проекты"  Margin="5"
+                Click="ShowProjectsButton_Click" />
+        </StackPanel>
+    </Grid>
+</Window>

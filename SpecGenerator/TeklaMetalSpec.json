@@ -1,0 +1,70 @@
+{
+	"ID": 0,
+	"Name": null,
+	"Profiles": null,
+	"Revision": 0,
+	"Documents": [{
+		"ID": 0,
+		"Name": "Двутавры стальные горячекатаные с параллельными гранями полок ГОСТ 26020-83",
+		"ProfilesTotal": [], //не нужно
+		"ProfilesCount": 0, //не нужно
+		"TotalWeight": 0, //не нужно
+		"IsSelected": false, //не нужно
+		"Materials": [{
+			"ID": 0,
+			"Name": "C235\r\nГОСТ 19281-89",
+			"TotalConstructionsWeight": [], //не нужно
+			"TotalWeight": 0, //не нужно
+			"IsSelected": false, //не нужно
+			"Profiles": [{
+				"ID": 1,
+				"Name": "Двутавр30К1",
+				"Tag": null, //не нужно
+				"ProfileItems": [], //не нужно
+				"Weight": 0,	//не нужно
+				"ConstructionTypes": [{ //добавь пожалуйста, можно в таком виде для всех элементов
+					"Name": "", //добавь пожалуйста
+					"Constructions": [{
+						"ID": 0,
+						"Name": 5,
+						"Count": 94190.579999999711,
+						"Weight": 94190.579999999711, //не нужно
+						"Profiles": null //не нужно
+					}]
+				}] //не нужно
+			}]
+		}]
+	},
+	{
+		"ID": 0,
+		"Name": "Швеллеры стальные гнутые равнополочные ГОСТ 8278-83",
+		"ProfilesTotal": [],
+		"ProfilesCount": 0,
+		"TotalWeight": 0,
+		"IsSelected": false,
+		"Materials": [{
+			"ID": 0,
+			"Name": "C235\r\nГОСТ 19281-89",
+			"TotalConstructionsWeight": [],
+			"TotalWeight": 0,
+			"IsSelected": false,
+			"Profiles": [{
+				"ID": 2,
+				"Name": "Швеллер120X50X6",
+				"Tag": null,
+				"ProfileItems": [],
+				"Weight": 0,
+				"ConstructionTypes": [{
+					"Name": "",
+					"Constructions": [{
+						"ID": 0,
+						"Name": 5,
+						"Count": 10343.521100000002,
+						"Weight": 10343.521100000002,
+						"Profiles": null
+					}]
+				}]
+			}]
+		}]
+	}]
+}

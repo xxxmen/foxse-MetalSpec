@@ -1,0 +1,375 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MetalSpecModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Catalogue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="200" />
+          <Property Name="Description" Type="nchar" MaxLength="1000" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MetalSpec.dbo.FireResistTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="FireResistTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="20" />
+          <Property Name="Description" Type="nchar" MaxLength="160" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'MetalSpec.dbo.Materials' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Materials">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="50" />
+          <Property Name="Description" Type="nchar" MaxLength="1000" />
+          <Property Name="Density" Type="real" />
+        </EntityType>
+        <EntityType Name="Profiles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="50" />
+          <Property Name="h" Type="real" />
+          <Property Name="b" Type="real" />
+          <Property Name="s" Type="real" />
+          <Property Name="t" Type="real" />
+          <Property Name="r1" Type="real" />
+          <Property Name="r2" Type="real" />
+          <Property Name="A" Type="real" />
+          <Property Name="ly" Type="real" />
+          <Property Name="lz" Type="real" />
+          <Property Name="lu" Type="real" />
+          <Property Name="Wy" Type="real" />
+          <Property Name="iy" Type="real" />
+          <Property Name="lv" Type="real" />
+          <Property Name="Wz" Type="real" />
+          <Property Name="Wv" Type="real" />
+          <Property Name="zo" Type="real" />
+          <Property Name="tgAlpha" Type="real" />
+          <Property Name="Sy" Type="real" />
+          <Property Name="gamma" Type="real" />
+          <Property Name="D" Type="real" />
+          <Property Name="n1" Type="real" />
+          <Property Name="n2" Type="real" />
+          <Property Name="z0" Type="real" />
+          <Property Name="Sz" Type="real" />
+          <Property Name="h_2t" Type="real" />
+          <Property Name="Wply" Type="real" />
+          <Property Name="Wplz" Type="real" />
+          <Property Name="Wvo" Type="real" />
+          <Property Name="iz" Type="real" />
+          <Property Name="iu" Type="real" />
+          <Property Name="iv" Type="real" />
+          <Property Name="lyz" Type="real" />
+          <Property Name="yo" Type="real" />
+          <Property Name="P" Type="real" />
+          <Property Name="SortamentID" Type="int" Nullable="false" />
+          <Property Name="PaintArea" Type="real" />
+        </EntityType>
+        <EntityType Name="Sortament">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nchar" MaxLength="200" />
+          <Property Name="Description" Type="nchar" MaxLength="1000" />
+          <Property Name="CatalogueID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CatalogueSortament">
+          <End Role="Catalogue" Type="Self.Catalogue" Multiplicity="1" />
+          <End Role="Sortament" Type="Self.Sortament" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogue">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sortament">
+              <PropertyRef Name="CatalogueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SortamentProfiles">
+          <End Role="Sortament" Type="Self.Sortament" Multiplicity="1" />
+          <End Role="Profiles" Type="Self.Profiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sortament">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Profiles">
+              <PropertyRef Name="SortamentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MetalSpecModelStoreContainer">
+          <EntitySet Name="Catalogue" EntityType="Self.Catalogue" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Profiles" EntityType="Self.Profiles" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sortament" EntityType="Self.Sortament" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FireResistTypes" EntityType="Self.FireResistTypes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [FireResistTypes].[ID] AS [ID], 
+    [FireResistTypes].[Name] AS [Name], 
+    [FireResistTypes].[Description] AS [Description]
+    FROM [dbo].[FireResistTypes] AS [FireResistTypes]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Materials" EntityType="Self.Materials" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Materials].[Id] AS [Id], 
+    [Materials].[Name] AS [Name], 
+    [Materials].[Description] AS [Description], 
+    [Materials].[Density] AS [Density]
+    FROM [dbo].[Materials] AS [Materials]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_CatalogueSortament" Association="Self.FK_CatalogueSortament">
+            <End Role="Catalogue" EntitySet="Catalogue" />
+            <End Role="Sortament" EntitySet="Sortament" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SortamentProfiles" Association="Self.FK_SortamentProfiles">
+            <End Role="Sortament" EntitySet="Sortament" />
+            <End Role="Profiles" EntitySet="Profiles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MetalSpecModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Catalogue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Sortament" Relationship="MetalSpecModel.CatalogueSortament" FromRole="Catalogue" ToRole="Sortament" />
+        </EntityType>
+        <EntityType Name="Sortament">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="true" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="Profiles" Relationship="MetalSpecModel.SortamentProfiles" FromRole="Sortament" ToRole="Profiles" />
+          <NavigationProperty Name="Catalogue" Relationship="MetalSpecModel.CatalogueSortament" FromRole="Sortament" ToRole="Catalogue" />
+          <Property Name="CatalogueID" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="MetalSpecEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Catalogue" EntityType="Self.Catalogue" />
+          <EntitySet Name="Sortament" EntityType="Self.Sortament" />
+          <EntitySet Name="Profiles" EntityType="MetalSpecModel.Profiles" />
+          <AssociationSet Name="SortamentProfiles" Association="MetalSpecModel.SortamentProfiles">
+            <End Role="Sortament" EntitySet="Sortament" />
+            <End Role="Profiles" EntitySet="Profiles" />
+          </AssociationSet>
+          <AssociationSet Name="CatalogueSortament" Association="MetalSpecModel.CatalogueSortament">
+            <End Role="Catalogue" EntitySet="Catalogue" />
+            <End Role="Sortament" EntitySet="Sortament" />
+          </AssociationSet>
+          <EntitySet Name="Materials" EntityType="MetalSpecModel.Materials" />
+          <EntitySet Name="FireResistTypes" EntityType="MetalSpecModel.FireResistTypes" />
+        </EntityContainer>
+        <EntityType Name="Profiles">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="h" Type="Single" />
+          <Property Name="b" Type="Single" />
+          <Property Name="s" Type="Single" />
+          <Property Name="t" Type="Single" />
+          <Property Name="r1" Type="Single" />
+          <Property Name="r2" Type="Single" />
+          <Property Name="A" Type="Single" />
+          <Property Name="ly" Type="Single" />
+          <Property Name="lz" Type="Single" />
+          <Property Name="lu" Type="Single" />
+          <Property Name="Wy" Type="Single" />
+          <Property Name="iy" Type="Single" />
+          <Property Name="lv" Type="Single" />
+          <Property Name="Wz" Type="Single" />
+          <Property Name="Wv" Type="Single" />
+          <Property Name="zo" Type="Single" />
+          <Property Name="tgAlpha" Type="Single" />
+          <Property Name="Sy" Type="Single" />
+          <Property Name="gamma" Type="Single" />
+          <Property Name="D" Type="Single" />
+          <Property Name="n1" Type="Single" />
+          <Property Name="n2" Type="Single" />
+          <Property Name="z0" Type="Single" />
+          <Property Name="Sz" Type="Single" />
+          <Property Name="h_2t" Type="Single" />
+          <Property Name="Wply" Type="Single" />
+          <Property Name="Wplz" Type="Single" />
+          <Property Name="Wvo" Type="Single" />
+          <Property Name="iz" Type="Single" />
+          <Property Name="iu" Type="Single" />
+          <Property Name="iv" Type="Single" />
+          <Property Name="lyz" Type="Single" />
+          <Property Name="yo" Type="Single" />
+          <Property Name="P" Type="Single" />
+          <NavigationProperty Name="Sortament" Relationship="MetalSpecModel.SortamentProfiles" FromRole="Profiles" ToRole="Sortament" />
+          <Property Name="SortamentID" Type="Int32" Nullable="false" />
+          <Property Name="PaintArea" Type="Single" />
+        </EntityType>
+        <Association Name="SortamentProfiles">
+          <End Type="MetalSpecModel.Sortament" Role="Sortament" Multiplicity="1" />
+          <End Type="MetalSpecModel.Profiles" Role="Profiles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sortament">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Profiles">
+              <PropertyRef Name="SortamentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="CatalogueSortament">
+          <End Type="MetalSpecModel.Catalogue" Role="Catalogue" Multiplicity="1" />
+          <End Type="MetalSpecModel.Sortament" Role="Sortament" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalogue">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Sortament">
+              <PropertyRef Name="CatalogueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Materials">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="Density" Type="Single" />
+          <Property Name="Description" Type="String" MaxLength="1000" FixedLength="true" Unicode="true" />
+        </EntityType>
+        <EntityType Name="FireResistTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="160" FixedLength="true" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="MetalSpecModelStoreContainer" CdmEntityContainer="MetalSpecEntities">
+    <EntitySetMapping Name="Catalogue">
+      <EntityTypeMapping TypeName="IsTypeOf(MetalSpecModel.Catalogue)">
+        <MappingFragment StoreEntitySet="Catalogue">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Sortament">
+      <EntityTypeMapping TypeName="IsTypeOf(MetalSpecModel.Sortament)">
+        <MappingFragment StoreEntitySet="Sortament">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="CatalogueID" ColumnName="CatalogueID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Profiles">
+      <EntityTypeMapping TypeName="IsTypeOf(MetalSpecModel.Profiles)">
+        <MappingFragment StoreEntitySet="Profiles">
+          <ScalarProperty Name="PaintArea" ColumnName="PaintArea" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="h" ColumnName="h" />
+          <ScalarProperty Name="b" ColumnName="b" />
+          <ScalarProperty Name="s" ColumnName="s" />
+          <ScalarProperty Name="t" ColumnName="t" />
+          <ScalarProperty Name="r1" ColumnName="r1" />
+          <ScalarProperty Name="r2" ColumnName="r2" />
+          <ScalarProperty Name="A" ColumnName="A" />
+          <ScalarProperty Name="ly" ColumnName="ly" />
+          <ScalarProperty Name="lz" ColumnName="lz" />
+          <ScalarProperty Name="lu" ColumnName="lu" />
+          <ScalarProperty Name="Wy" ColumnName="Wy" />
+          <ScalarProperty Name="iy" ColumnName="iy" />
+          <ScalarProperty Name="lv" ColumnName="lv" />
+          <ScalarProperty Name="Wz" ColumnName="Wz" />
+          <ScalarProperty Name="Wv" ColumnName="Wv" />
+          <ScalarProperty Name="zo" ColumnName="zo" />
+          <ScalarProperty Name="tgAlpha" ColumnName="tgAlpha" />
+          <ScalarProperty Name="Sy" ColumnName="Sy" />
+          <ScalarProperty Name="gamma" ColumnName="gamma" />
+          <ScalarProperty Name="D" ColumnName="D" />
+          <ScalarProperty Name="n1" ColumnName="n1" />
+          <ScalarProperty Name="n2" ColumnName="n2" />
+          <ScalarProperty Name="z0" ColumnName="z0" />
+          <ScalarProperty Name="Sz" ColumnName="Sz" />
+          <ScalarProperty Name="h_2t" ColumnName="h_2t" />
+          <ScalarProperty Name="Wply" ColumnName="Wply" />
+          <ScalarProperty Name="Wplz" ColumnName="Wplz" />
+          <ScalarProperty Name="Wvo" ColumnName="Wvo" />
+          <ScalarProperty Name="iz" ColumnName="iz" />
+          <ScalarProperty Name="iu" ColumnName="iu" />
+          <ScalarProperty Name="iv" ColumnName="iv" />
+          <ScalarProperty Name="lyz" ColumnName="lyz" />
+          <ScalarProperty Name="yo" ColumnName="yo" />
+          <ScalarProperty Name="P" ColumnName="P" />
+          <ScalarProperty Name="SortamentID" ColumnName="SortamentID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+          <EntitySetMapping Name="Materials">
+            <EntityTypeMapping TypeName="MetalSpecModel.Materials">
+              <MappingFragment StoreEntitySet="Materials">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Density" ColumnName="Density" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FireResistTypes">
+            <EntityTypeMapping TypeName="MetalSpecModel.FireResistTypes">
+              <MappingFragment StoreEntitySet="FireResistTypes">
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

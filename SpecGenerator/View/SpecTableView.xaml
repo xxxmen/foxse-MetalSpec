@@ -1,0 +1,790 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:MetalSpec.ViewModel" 
+        x:Class="MetalSpec.SpecTableView"
+        xmlns:custom="clr-namespace:MetalSpec"
+        Title="Спецификация металлопроката" MinHeight="320" Height="480" Width="1150" MinWidth="680" Background="#FFD4D0C8" x:Name="mainWindow" Closing="mainWindow_Closing" Icon="../Images/table_icon.png" >
+    <Window.Resources>
+        <AlternationConverter x:Key="AlternationConverter"/>
+        <local:SpecTableViewModel x:Key="sh" />
+        <custom:ColorToBrushConverter x:Key="ColorToBrushConverter" />
+        <Style TargetType="{x:Type ListBox}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border BorderBrush="{TemplateBinding Border.BorderBrush}" BorderThickness="0" Name="Bd" Background="{TemplateBinding Panel.Background}" SnapsToDevicePixels="True" Padding="0">
+                            <ScrollViewer Focusable="False" Padding="{TemplateBinding Control.Padding}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style> 
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <!--<Setter Property="FontSize" Value="13.333"/>-->
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <!--<Setter Property="FontSize" Value="13.333"/>-->
+        </Style>
+        <Style TargetType="{x:Type WrapPanel}">
+            <Setter Property="Margin" Value="0"/>
+        </Style>
+        <Style TargetType="{x:Type Label}">
+            <Setter Property="Margin" Value="0"/>
+            <!--<Setter Property="FontSize" Value="13.333"/>-->
+        </Style>
+        <Style TargetType="{x:Type ListView}">
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="0"/>
+            <Setter Property="Control.Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBox">
+                        <Border BorderBrush="{TemplateBinding Border.BorderBrush}" BorderThickness="0" Name="Bd" Background="{TemplateBinding Panel.Background}" SnapsToDevicePixels="True" Padding="0">
+                            <ScrollViewer Focusable="False" Padding="{TemplateBinding Control.Padding}">
+                                <ItemsPresenter SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                            </ScrollViewer>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style TargetType="{x:Type DataGridColumnHeader}">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,0.909" StartPoint="0.5,0.091">
+                        <GradientStop Color="#FF6E7FA7"/>
+                        <GradientStop Color="#2A395A" Offset="1"/>
+                        <GradientStop Color="#FF6E7FA7" Offset="0.488"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="{x:Type DataGridCell}">
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Background">
+                <Setter.Value>
+                    <LinearGradientBrush EndPoint="0.5,0.909" StartPoint="0.5,0.091">
+                        <GradientStop Color="#FF6E7FA7"/>
+                        <GradientStop Color="#2A395A" Offset="1"/>
+                        <GradientStop Color="#FF6E7FA7" Offset="0.488"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderBrush" Value="White"/>
+            <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid DataContext="{Binding Source={StaticResource sh}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Menu VerticalAlignment="Top" Grid.Row="0" >
+            <MenuItem Header="Файл">
+                <MenuItem Header="Новый" Command="{Binding Source={StaticResource sh}, Path=NewCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16">
+                            <Image.Source>
+                                <BitmapImage UriSource="..\Images\document_new.png" />
+                            </Image.Source>
+                        </Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Открыть" Command="{Binding Source={StaticResource sh}, Path=OpenCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16">
+                            <Image.Source>
+                                <BitmapImage UriSource="..\Images\open_file.png" />
+                            </Image.Source>
+                        </Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Сохранить" Command="{Binding Source={StaticResource sh}, Path=SaveCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16">
+                            <Image.Source>
+                                <BitmapImage UriSource="..\Images\document_save.png" />
+                            </Image.Source>
+                        </Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Сохранить как..." Command="{Binding Source={StaticResource sh}, Path=SaveAsCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16">
+                            <Image.Source>
+                                <BitmapImage UriSource="..\Images\save_as.png" />
+                            </Image.Source>
+                        </Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Экспорт в Excel" Command="{Binding Source={StaticResource sh}, Path=ExcelExportCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16">
+                            <Image.Source>
+                                <BitmapImage UriSource="..\Images\export_excel.png" />
+                            </Image.Source>
+                        </Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Экспорт в Autocad" Command="{Binding Source={StaticResource sh}, Path=AutocadExportCommand}">
+                    <MenuItem.Icon>
+                        <Image Height="16">
+                            <Image.Source>
+                                <BitmapImage UriSource="..\Images\export_acad.png" />
+                            </Image.Source>
+                        </Image>
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Недавние файлы" ItemsSource="{Binding Source={StaticResource sh}, Path=settings.LastFiles, Mode=OneWay}">
+                    <MenuItem.ItemTemplate>
+                        <DataTemplate>
+                            <MenuItem Header="{Binding Mode=OneWay}" Command="{Binding Source={StaticResource sh}, Path=OpenFileCommand}" CommandParameter="{Binding}"/>
+                        </DataTemplate>
+                    </MenuItem.ItemTemplate>
+                </MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Выход" Click="MenuItem_Click"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Параметры экспорта">
+                <Label Content="Папка для экспорта:" HorizontalAlignment="Left"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Name="labelExportPath" Content="{Binding settings.ExportDirectory}" Grid.Column="0" />
+                    <Button Content="..." Grid.Column="1" HorizontalAlignment="Right" Command="{Binding Source={StaticResource sh}, Path=BrowseExportPathCommand}"/>
+                </Grid>
+                <Separator/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Единицы измерения" Grid.Column="0" HorizontalAlignment="Left" Padding="0,5,5,5"/>
+                    <ComboBox SelectedItem="{Binding settings.Units}" ItemsSource="{Binding AvailableUnits}" Grid.Column="1"/>
+                </Grid>
+                <Separator/>
+                <CheckBox Content="Штамп в Excel" IsChecked="{Binding settings.StampInExcel}"/>
+                <Separator/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Число знаков после запятой" Grid.Column="0" HorizontalAlignment="Left" Padding="0,5,5,5"/>
+                    <TextBox Text="{Binding settings.UnitDigits}" Grid.Column="1" />
+                </Grid>
+            </MenuItem>
+            <!--
+            <MenuItem Header="База элементов">
+                <MenuItem Header="Добавить"></MenuItem>
+                <MenuItem Header="Сохранить"></MenuItem>
+                <MenuItem Header="Загрузить"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Редактировать"></MenuItem>
+            </MenuItem>
+            -->
+            <MenuItem Header="Справка">
+                <MenuItem Header="Документация" >
+                </MenuItem>
+                <MenuItem Header="О программе..." Click="MenuItem_Click_1">
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+        <ToolBarTray VerticalAlignment="Top" Grid.Row="1">
+            <ToolBar ToolTip="Главная" >
+                <Button ToolTip="Новая спецификация" Command="{Binding Source={StaticResource sh}, Path=NewCommand}">
+                    <Image Source="..\Images\document_new.png" MaxHeight="32"></Image>
+                </Button>
+                <Separator></Separator>
+                <Button ToolTip="Открыть..." Command="{Binding Source={StaticResource sh}, Path=OpenCommand}">
+                    <Image Source="..\Images\open_file.png" MaxHeight="32"></Image>
+                </Button>
+                <Button ToolTip="Сохранить" Command="{Binding Source={StaticResource sh}, Path=SaveCommand}">
+                    <Image Source="..\Images\document_save.png" MaxHeight="32"></Image>
+                </Button>
+                <Button ToolTip="Сохранить как..." Command="{Binding Source={StaticResource sh}, Path=SaveAsCommand}">
+                    <Image Source="..\Images\save_as.png" MaxHeight="32"></Image>
+                </Button>
+            </ToolBar>
+            <ToolBar ToolTip="Экспорт..." >
+                <Button ToolTip="Экспорт в Microsoft Excel" Command="{Binding Source={StaticResource sh}, Path=ExcelExportCommand}">
+                    <Image Source="..\Images\export_excel.png" MaxHeight="32"></Image>
+                </Button>
+                <Button ToolTip="Экспорт в Autocad" Command="{Binding Source={StaticResource sh}, Path=AutocadExportCommand}">
+                    <Image Source="..\Images\export_acad.png" MaxHeight="32"></Image>
+                </Button>
+            </ToolBar>
+            <ToolBar ToolTip="Расчет..." >
+                <Button ToolTip="Рассчитать общую массу металла" Command="{Binding Source={StaticResource sh}, Path=CountMassCommand}">
+                    <Image Source="..\Images\calc_icon.png" MaxHeight="32"></Image>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <DataGrid DataContext="{Binding}" ItemsSource="{Binding SpecTableHeaders}" x:Name="specHeadDataGrid" HorizontalAlignment="Stretch" Grid.Row="2" 
+                  AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserSortColumns="False" CanUserAddRows="False"  
+                  SelectionUnit="Cell" SelectionMode="Single" FontWeight="Medium" BorderThickness="0">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn x:Name="gostColHead" Width="125" MinWidth="125" >
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate >
+                            <TextBlock Text="Наименование профиля ГОСТ, ТУ" VerticalAlignment="Center" 
+                                               Width="{Binding ElementName=gostColHead,Path=ActualWidth}"
+                                               TextWrapping="Wrap" TextAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn x:Name="matColHead" Width="100" MinWidth="100">
+                    <DataGridTextColumn.HeaderTemplate>
+                        <DataTemplate >
+                            <Border BorderThickness="1,0" BorderBrush="Black" Width="{Binding ElementName=matColHead,Path=ActualWidth}">
+                                <TextBlock Text="Наименование или марка металла&#x0a;ГОСТ, ТУ" VerticalAlignment="Center"
+                                           Width="{Binding ElementName=matColHead,Path=ActualWidth}" 
+                                           HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"/>
+                            </Border>
+                        </DataTemplate>
+                    </DataGridTextColumn.HeaderTemplate>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn x:Name="profColHead" Header="Номер&#x0a;или размеры&#x0a;профиля, мм" Width="85" MinWidth="85" >
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate >
+                            <TextBlock Text="Номер или размеры профиля, мм" VerticalAlignment="Center" 
+                                            Width="{Binding ElementName=profColHead,Path=ActualWidth}"
+                                            HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="numColHead" Width="40" MinWidth="40" MaxWidth="40">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="№&#x0a;п.п." Width="{Binding ElementName=numColHead,Path=ActualWidth}" 
+                                           VerticalAlignment="Center" HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="massColHead" MinWidth="650" MaxWidth="1000" Width="650">
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Масса метала, по элементам конструкций, т" Width="{Binding ElementName=massColHead,Path=ActualWidth}" 
+                                           HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ListBox VerticalAlignment="Bottom" BorderThickness="0" Background="#FFCDCDCD">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="Padding" Value="0" />
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox ItemsSource="{Binding ConstructionTypes}" BorderThickness="0" VerticalAlignment="Bottom" Background="#FFCDCDCD">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="ListBoxItem">
+                                            <Setter Property="Margin" Value="0" />
+                                            <Setter Property="Padding" Value="0" />
+
+                                        </Style>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <ListBox VerticalAlignment="Bottom">
+                                                <ListBox.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <StackPanel Orientation="Horizontal" />
+                                                    </ItemsPanelTemplate>
+                                                </ListBox.ItemsPanel>
+                                                <ListBox.ItemContainerStyle>
+                                                    <Style TargetType="ListBoxItem">
+                                                        <Setter Property="Margin" Value="0" />
+                                                        <Setter Property="Padding" Value="0" />
+                                                        <Setter Property="Height" Value="Auto"/>
+                                                    </Style>
+                                                </ListBox.ItemContainerStyle>
+                                                <!-- Для разных типов конструкций
+                                                <ListView>
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="Margin" Value="0" />
+                                                            <Setter Property="Padding" Value="0" />
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                   
+                                                        <ListBox HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Right">
+                                                        <ListBox.ItemsPanel>
+                                                            <ItemsPanelTemplate>
+                                                                <StackPanel Orientation="Horizontal" />
+                                                            </ItemsPanelTemplate>
+                                                        </ListBox.ItemsPanel>
+                                                        <ListBox.ItemContainerStyle>
+                                                            <Style TargetType="ListBoxItem">
+                                                                <Setter Property="Padding" Value="0" />
+                                                                <Setter Property="Margin" Value="0" />
+                                                            </Style>
+                                                        </ListBox.ItemContainerStyle>
+                                                        <TextBox Text="{Binding Name}" ToolTip="{Binding Name}" BorderThickness="0"/>
+                                                        <Button Name="DeleteConstruction1Type" ToolTip="Удалить тип конструкции" HorizontalAlignment="Right">
+                                                            <Image  Source="../Images/remove.png" MaxHeight="10"></Image>
+                                                        </Button>
+                                                    </ListBox>
+                                                    -->
+                                                <ListBox ItemsSource="{Binding Constructions}" BorderThickness="0" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Stretch" >
+                                                    <ListBox.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ListBox.ItemsPanel>
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="Padding" Value="0" />
+                                                            <Setter Property="Margin" Value="0" />
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="BorderBrush" Value="Black"/>
+                                                            <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
+                                                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                            
+                                                            <Setter Property="Height" Value="Auto"/>
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <ListBox VerticalAlignment="Bottom">
+                                                                <ListBox.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <StackPanel Orientation="Horizontal" />
+                                                                    </ItemsPanelTemplate>
+                                                                </ListBox.ItemsPanel>
+                                                                <ListBox.ItemContainerStyle>
+                                                                    <Style TargetType="ListBoxItem">
+                                                                        <Setter Property="Margin" Value="0" />
+                                                                        <Setter Property="Padding" Value="0" />
+                                                                        <Setter Property="VerticalAlignment" Value="Bottom"/>
+                                                                        <Setter Property="Height" Value="Auto"/>
+                                                                    </Style>
+                                                                </ListBox.ItemContainerStyle>
+                                                                <TextBox Text="{Binding Name, Mode=TwoWay}" Tag="{Binding ID}" ToolTip="{Binding Name, Mode=OneWay}" 
+                                                                         BorderThickness="0" Width="45" TextChanged="TextBox_TextChanged_1" TextWrapping="Wrap">
+                                                                </TextBox>
+                                                                <Button Name="RemoveConstruction" ToolTip="Удалить конструкцию" Command="{Binding Source={StaticResource sh}, Path=RemoveConstructionCommand}" CommandParameter="{Binding}">
+                                                                    <Image Source="../Images/remove.png" MaxHeight="10" Stretch="Uniform"></Image>
+                                                                </Button>
+                                                            </ListBox>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                                <!-- </ListView>-->
+                                                <Button Name="AddConstruction" ToolTip="Добавить конструкцию" VerticalContentAlignment="Bottom" HorizontalContentAlignment="Right" Command="{Binding Source={StaticResource sh}, Path=AddConstructionCommand}">
+                                                    <Image Source="../Images/add.png" MaxHeight="10"></Image>
+                                                </Button>
+                                            </ListBox>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                                <!-- <Button Name="DeleteConstructionType" MinHeight="22" MinWidth="22" ToolTip="Добавить тип конструкции">
+                                    <Image  Source="../Images/add.png" ></Image>
+                                </Button>-->
+                            </ListBox>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="totalColHead" Width="60" MinWidth="60" >
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Общая&#x0a;масса,&#x0a;т" Width="{Binding ElementName=totalColHead,Path=ActualWidth}" 
+                                           HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn x:Name="CorrosionColHead" Width="50" MinWidth="50" >
+                    <DataGridTemplateColumn.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="Анти&#x0a;кор" Width="{Binding ElementName=CorrosionColHead,Path=ActualWidth}" 
+                                           HorizontalAlignment="Stretch" TextWrapping="Wrap" TextAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.HeaderTemplate>
+                </DataGridTemplateColumn>
+                <!--<DataGridTextColumn x:Name="FireColHead" Header="O" Width="30" MinWidth="30" />-->
+            </DataGrid.Columns>
+        </DataGrid>
+        <ListView Name="specListBox" ItemsSource="{Binding Source={StaticResource sh}, Path=Documents}" SelectionMode="Single"  Grid.Row="3" 
+                  SelectedIndex="{Binding Source={StaticResource sh}, Path=CurrentDocumentIndex, Mode=TwoWay}" LayoutUpdated="specListBox_LayoutUpdated" IsTabStop="True" 
+                  Background="#FFCDCDCD" >
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Добавить документ" Command="{Binding Source={StaticResource sh}, Path=AddDocumentCommand}">
+                    </MenuItem>
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Margin" Value="0" />
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="BorderThickness" Value="0" />
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ListView>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Добавить материал" Command="{Binding Source={StaticResource sh}, Path=AddMaterialCommand}" CommandParameter="{Binding}">
+                                </MenuItem>
+                                <MenuItem Header="Удалить документ" Command="{Binding Source={StaticResource sh}, Path=RemoveCommand}" CommandParameter="{Binding}">
+                                </MenuItem>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Margin" Value="0" />
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                        <WrapPanel Margin="0" >
+                            <ComboBox SelectedItem="{Binding Name}"  ItemsSource="{Binding Source={StaticResource sh}, Path=DocumentStringItemsSource}" BorderThickness="0" 
+                                      Width="{Binding Width.Value, ElementName=gostColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=gostColHead, Mode=OneWay}" Background="{Binding CellBackgroundColor, Converter={StaticResource ColorToBrushConverter}}" ToolTip="{Binding Tooltip}" 
+                                      Margin="5,-1,0,0">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding}" TextWrapping="Wrap"></TextBlock>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                            <ListView BorderThickness="0" ItemsSource="{Binding Materials}" Margin="0">
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <ListView>
+                                            <ListView.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Header="Добавить профиль" Command="{Binding Source={StaticResource sh}, Path=AddProfileCommand}" CommandParameter="{Binding}">
+                                                    </MenuItem>
+                                                    <MenuItem Header="Удалить материал" Command="{Binding Source={StaticResource sh}, Path=RemoveCommand}" CommandParameter="{Binding}">
+                                                    </MenuItem>
+                                                </ContextMenu>
+                                            </ListView.ContextMenu>
+                                            <WrapPanel >
+                                                <WrapPanel.Resources>
+                                                    <Style TargetType="{x:Type ListView}">
+                                                        <Setter Property="Margin" Value="0" />
+                                                        <Setter Property="Padding" Value="0" />
+                                                    </Style>
+                                                </WrapPanel.Resources>
+                                                <ComboBox SelectedItem="{Binding Name}" ItemsSource="{Binding Source={StaticResource sh}, Path=MaterialsItemsSource}" ToolTip="{Binding Tooltip}"
+                                                          BorderThickness="0" Width="{Binding Width.Value, ElementName=matColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=matColHead, Mode=OneWay}" 
+                                                          Background="{Binding CellBackgroundColor, Converter={StaticResource ColorToBrushConverter}}"/>
+                                                <ListView ItemsSource="{Binding Profiles}">
+                                                    <ListView.ItemContainerStyle>
+                                                        <Style TargetType="ListViewItem">
+                                                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                                            <Setter Property="Margin" Value="0" />
+                                                            <Setter Property="Padding" Value="0" />
+                                                        </Style>
+                                                    </ListView.ItemContainerStyle>
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <WrapPanel>
+                                                                <WrapPanel.ContextMenu>
+                                                                    <ContextMenu>
+                                                                        <MenuItem Header="Удалить профиль" Command="{Binding Source={StaticResource sh}, Path=RemoveCommand}" CommandParameter="{Binding}">
+                                                                        </MenuItem>
+                                                                    </ContextMenu>
+                                                                </WrapPanel.ContextMenu>
+                                                                <WrapPanel.Resources>
+                                                                    <Style TargetType="{x:Type TextBlock}">
+                                                                        <Setter Property="Margin" Value="0" />
+                                                                        <Setter Property="Padding" Value="0" />
+                                                                    </Style>
+                                                                </WrapPanel.Resources>
+                                                                <WrapPanel.Background>
+                                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                        <GradientStop Color="White" Offset="0.95"/>
+                                                                        <GradientStop Color="Black" Offset="1"/>
+                                                                    </LinearGradientBrush>
+                                                                </WrapPanel.Background>
+                                                                <!--
+                                                        <ComboBox Tag="{Binding Tag}" SelectedItem="{Binding Name}" ItemsSource="{Binding DataContext.ProfilesItems[{Binding Tag}], RelativeSource={RelativeSource 
+                                                            AncestorType={x:Type Window}}}" BorderThickness="0" Width="{Binding Width.Value, ElementName=profColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=profColHead, Mode=OneWay}" />
+                                                        -->
+                                                                <ComboBox SelectedItem="{Binding Name}" ItemsSource="{Binding ProfilesItems}" 
+                                                                BorderThickness="0" Width="{Binding Width.Value, ElementName=profColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=profColHead, Mode=OneWay}" Background="{Binding CellBackgroundColor, Converter={StaticResource ColorToBrushConverter}, Mode=OneWay}" ToolTip="{Binding Tooltip, Mode=OneWay}"/>
+                                                                <TextBlock Text="{Binding ID}" Width="35" MinWidth="35" MaxWidth="35" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                                                <ListBox ItemsSource="{Binding ConstructionTypes}" Width="{Binding Width.Value, ElementName=massColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=massColHead, Mode=OneWay}" >
+                                                                    <ListBox.ItemsPanel>
+                                                                        <ItemsPanelTemplate>
+                                                                            <StackPanel Orientation="Horizontal" >
+                                                                                <StackPanel.Background>
+                                                                                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                                                        <GradientStop Color="Black" Offset="1"/>
+                                                                                        <GradientStop Color="White" Offset="0.95"/>
+                                                                                    </LinearGradientBrush>
+                                                                                </StackPanel.Background>
+                                                                            </StackPanel>
+
+                                                                        </ItemsPanelTemplate>
+                                                                    </ListBox.ItemsPanel>
+                                                                    <ListBox.ItemContainerStyle>
+                                                                        <Style TargetType="ListBoxItem">
+                                                                            <Setter Property="Padding" Value="0" />
+                                                                            <Setter Property="Margin" Value="0" />
+                                                                        </Style>
+                                                                    </ListBox.ItemContainerStyle>
+                                                                    <ListBox.ItemTemplate>
+                                                                        <DataTemplate>
+                                                                            <ListView >
+                                                                                <ListView.ItemContainerStyle>
+                                                                                    <Style TargetType="ListViewItem">
+                                                                                        <Setter Property="Margin" Value="0" />
+                                                                                        <Setter Property="Padding" Value="0" />
+                                                                                    </Style>
+                                                                                </ListView.ItemContainerStyle>
+                                                                                <ListBox ItemsSource="{Binding Constructions}" BorderThickness="0">
+                                                                                    <ListBox.ItemsPanel>
+                                                                                        <ItemsPanelTemplate>
+                                                                                            <StackPanel Orientation="Horizontal" />
+                                                                                        </ItemsPanelTemplate>
+                                                                                    </ListBox.ItemsPanel>
+                                                                                    <ListBox.ItemContainerStyle>
+                                                                                        <Style TargetType="ListBoxItem">
+                                                                                            <Setter Property="Padding" Value="0" />
+                                                                                            <Setter Property="Margin" Value="0" />
+                                                                                        </Style>
+                                                                                    </ListBox.ItemContainerStyle>
+                                                                                    <ListBox.ItemTemplate>
+                                                                                        <DataTemplate>
+                                                                                            <ListBox ItemsSource="{Binding FireResists}">
+                                                                                                <ListBox.ContextMenu>
+                                                                                                    <ContextMenu>
+                                                                                                        <MenuItem Header="Добавить степень огнезащиты" Command="{Binding Source={StaticResource sh}, Path=AddFireResistCommand}" CommandParameter="{Binding}">
+                                                                                                        </MenuItem>
+                                                                                                    </ContextMenu>
+                                                                                                </ListBox.ContextMenu>
+                                                                                                <ListBox.ItemContainerStyle>
+                                                                                                    <Style TargetType="ListBoxItem">
+                                                                                                        <Setter Property="Padding" Value="0" />
+                                                                                                        <Setter Property="Margin" Value="0" />
+                                                                                                        <Setter Property="Foreground" Value="Black"/>
+                                                                                                        <Setter Property="BorderBrush" Value="Black"/>
+                                                                                                        <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
+                                                                                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                                                                    </Style>
+                                                                                                </ListBox.ItemContainerStyle>
+                                                                                                <ListBox.ItemsPanel>
+                                                                                                    <ItemsPanelTemplate>
+                                                                                                        <StackPanel Orientation="Vertical" />
+                                                                                                    </ItemsPanelTemplate>
+                                                                                                </ListBox.ItemsPanel>
+                                                                                                <ListBox.ItemTemplate>
+                                                                                                    <DataTemplate>
+                                                                                                        <ListBox>
+                                                                                                            <ListBox.ContextMenu>
+                                                                                                                <ContextMenu>
+                                                                                                                    <MenuItem Header="Добавить степень огнезащиты" Command="{Binding Source={StaticResource sh}, Path=AddFireResistCommand}" CommandParameter="{Binding Owner}"/>
+                                                                                                                    <MenuItem Header="Удалить степень огнезащиты" Command="{Binding Source={StaticResource sh}, Path=RemoveCommand}" CommandParameter="{Binding}"/>
+                                                                                                                </ContextMenu>
+                                                                                                            </ListBox.ContextMenu>
+                                                                                                            <TextBox Text="{Binding StrCount, Mode=TwoWay}" ToolTip="{Binding Owner.Name, Mode=TwoWay}" BorderThickness="1" Width="60" VerticalAlignment="Center" HorizontalAlignment="Center" TextChanged="TextBox_TextChanged" TextAlignment="Center" PreviewTextInput="TextBox_PreviewTextInput" MouseLeftButtonUp="TextBox_MouseUp" LostFocus="TextBox_LostFocus" Background="#FFF0EDB3" />
+                                                                                                            <ComboBox IsEditable="True" SelectedItem="{Binding Name}" ItemsSource="{Binding Source={StaticResource sh}, Path=FireResistItemsSource}" Width="60" ToolTip="Огнезащита" ></ComboBox>
+                                                                                                            <!--<CheckBox x:Name="checkBoxFire" IsChecked="{Binding ProtectedFromFire}" ToolTip="Огнезащита" Width="{Binding Width.Value, ElementName=FireColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=FireColHead, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4,0,-10,0"/>-->
+                                                                                                        </ListBox>
+                                                                                                    </DataTemplate>
+                                                                                                </ListBox.ItemTemplate>
+                                                                                            </ListBox>
+                                                                                        </DataTemplate>
+                                                                                    </ListBox.ItemTemplate>
+                                                                                </ListBox>
+                                                                            </ListView>
+                                                                        </DataTemplate>
+                                                                    </ListBox.ItemTemplate>
+                                                                </ListBox>
+                                                                <TextBlock Text="{Binding TotalWeight, Mode=OneWay}" Width="{Binding Width.Value, ElementName=totalColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=totalColHead, Mode=OneWay}" TextAlignment="Center" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                                                                <CheckBox x:Name="checkBoxCor" IsChecked="{Binding ProtectedFromCorrosion}" ToolTip="Антикор." 
+                                                                          Width="{Binding Width.Value, ElementName=CorrosionColHead, Mode=OneWay}" 
+                                                                          MinWidth="{Binding MinWidth, ElementName=CorrosionColHead, Mode=OneWay}" 
+                                                                          VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0"/>
+                                                                <!--<CheckBox x:Name="checkBoxFire" IsChecked="{Binding ProtectedFromFire}" ToolTip="Огнезащита" Width="{Binding Width.Value, ElementName=FireColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=FireColHead, Mode=OneWay}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="4,0,-10,0"/>-->
+                                                            </WrapPanel>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+
+                                            </WrapPanel>
+                                            <WrapPanel Background="#FFB0D6B1" >
+                                                <TextBlock Text ="Итого: " Width="{Binding Width.Value, ElementName=matColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=matColHead, Mode=OneWay}"/>
+                                                <TextBlock Width="{Binding Width.Value, ElementName=profColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=profColHead, Mode=OneWay}"/>
+                                                <TextBlock  Width="40" MinWidth="40" MaxWidth="40" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                <ListBox Background="#FFB0D6B1" ItemsSource="{Binding TotalConstructionsWeights, Mode=OneWay}" BorderThickness="0" Width="{Binding Width.Value, ElementName=massColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=massColHead, Mode=OneWay}">
+                                                    <ListBox.ItemsPanel>
+                                                        <ItemsPanelTemplate>
+                                                            <StackPanel Orientation="Horizontal" />
+                                                        </ItemsPanelTemplate>
+                                                    </ListBox.ItemsPanel>
+                                                    <ListBox.ItemContainerStyle>
+                                                        <Style TargetType="ListBoxItem">
+                                                            <Setter Property="Padding" Value="0" />
+                                                            <Setter Property="Margin" Value="0" />
+                                                            <Setter Property="Foreground" Value="Black"/>
+                                                            <Setter Property="BorderBrush" Value="Black"/>
+                                                            <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
+                                                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                                        </Style>
+                                                    </ListBox.ItemContainerStyle>
+                                                    <ListBox.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <ListBox Background="#FFB0D6B1">
+                                                                <ListBox.ItemsPanel>
+                                                                    <ItemsPanelTemplate>
+                                                                        <StackPanel Orientation="Horizontal" />
+                                                                    </ItemsPanelTemplate>
+                                                                </ListBox.ItemsPanel>
+                                                                <TextBlock Text="{Binding}" Width="60" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Background="#FF86D488" Margin="0" />
+                                                            </ListBox>
+                                                        </DataTemplate>
+                                                    </ListBox.ItemTemplate>
+                                                </ListBox>
+                                                <TextBlock Background="#FF86D488" Text ="{Binding TotalWeight}" Width="{Binding Width.Value, ElementName=totalColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=totalColHead, Mode=OneWay}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                            </WrapPanel>
+                                        </ListView>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </WrapPanel>
+                        <WrapPanel Background="#FFBCD8FF" Margin="7,0,0,0">
+                            <TextBlock Background="#FFBCD8FF" Text ="Всего профиля: " Width="{Binding Width.Value, ElementName=gostColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=gostColHead, Mode=OneWay}"/>
+                            <TextBlock Width="{Binding Width.Value, ElementName=matColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=matColHead, Mode=OneWay}"/>
+                            <TextBlock Width="{Binding Width.Value, ElementName=profColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=profColHead, Mode=OneWay}"/>
+                            <TextBlock  Width="40" MinWidth="40" MaxWidth="40" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            <ListBox Background="#FFBCD8FF" ItemsSource="{Binding ProfilesTotal}" Width="{Binding Width.Value, ElementName=massColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=massColHead, Mode=OneWay}">
+                                <ListBox.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListBox.ItemsPanel>
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="Foreground" Value="Black"/>
+                                        <Setter Property="BorderBrush" Value="Black"/>
+                                        <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
+                                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <ListBox Background="#FFBCD8FF">
+                                            <ListBox.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ListBox.ItemsPanel>
+                                            <TextBlock Background="#FF94C0FF" Text="{Binding}" Width="60" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Margin="0" FontWeight="Bold" />
+                                        </ListBox>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <TextBlock Background="#FF94C0FF" Text ="{Binding TotalWeight}" FontWeight="Bold" Width="{Binding Width.Value, ElementName=totalColHead, Mode=OneWay}" MinWidth="{Binding MinWidth, ElementName=totalColHead, Mode=OneWay}" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </WrapPanel>
+                    </ListView>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <ListBox BorderThickness="0" Height="23" VerticalAlignment="Bottom" Background="#FFDAADFF" Grid.Row="4" Margin="8,0,0,0">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="0" />
+                    <Setter Property="Margin" Value="0" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <TextBlock x:Name="labelTotalDocument" Text="Всего масса металла:" VerticalAlignment="Center" MinWidth="{Binding MinWidth, ElementName=gostColHead, Mode=OneWay}" 
+                       Width="{Binding Width.Value, ElementName=gostColHead, Mode=OneWay}" FontWeight="Bold" Height="23" />
+            <TextBlock Width="{Binding Width.Value, ElementName=matColHead, Mode=OneWay}" Height="23"/>
+            <TextBlock Width="{Binding Width.Value, ElementName=profColHead, Mode=OneWay}"/>
+            <TextBlock Width="40"/>
+            <ListBox Background="#FFDEB6FF" ItemsSource="{Binding TotalMetalMass, Mode=OneWay}" BorderThickness="0"  Height="23" MinWidth="{Binding MinWidth, ElementName=massColHead, Mode=OneWay}" Width="{Binding Width.Value, ElementName=massColHead, Mode=OneWay}" >
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0" />
+                        <Setter Property="Margin" Value="0" />
+                        <Setter Property="Background" Value="#FFDAADFF" />
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="BorderBrush" Value="Black"/>
+                        <Setter Property="BorderThickness" Value="0, 0, 1, 0"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <ListBox Background="#FFDEB6FF">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <TextBlock Background="#FFC27EFB" Text="{Binding  Mode=OneWay}" Width="60" VerticalAlignment="Center" HorizontalAlignment="Center" TextAlignment="Center" Height="23" FontWeight="Bold"/>
+                        </ListBox>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBlock Background="#FFD5A1FF" x:Name="totalMassCount" Text="{Binding TotalMassCount, Mode=OneWay}" TextAlignment="Center"  MinWidth="{Binding MinWidth, ElementName=totalColHead, Mode=OneWay}" Width="{Binding Width.Value, ElementName=totalColHead, Mode=OneWay}" Height="23" HorizontalAlignment="Center" FontWeight="Bold" Margin="0"/>
+            <TextBlock Background="#FFD5A1BB" x:Name="antiCorTotalArea" Text="{Binding PaintArea, Mode=OneWay}" TextAlignment="Center"  MinWidth="{Binding MinWidth, ElementName=CorrosionColHead, Mode=OneWay}" Width="{Binding Width.Value, ElementName=CorrosionColHead, Mode=OneWay}" Height="23" HorizontalAlignment="Center" FontWeight="Bold" Margin="0"/>
+        </ListBox>
+        <StatusBar Grid.Row="5" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Bottom">
+            <StatusBarItem>
+                <TextBlock Text="{Binding Source={StaticResource sh}, Path=SpecFilePatch}"></TextBlock>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>

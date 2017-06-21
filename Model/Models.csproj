@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{06BE4F42-A127-4E87-B751-4AB1FBF25E02}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MetalSpec</RootNamespace>
+    <AssemblyName>Model</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Catalogue.cs">
+      <DependentUpon>ProfilesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DocumentsModel.cs" />
+    <Compile Include="FireResistTypes.cs">
+      <DependentUpon>ProfilesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Materials.cs">
+      <DependentUpon>ProfilesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Model.cs" />
+    <Compile Include="Profiles.cs">
+      <DependentUpon>ProfilesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProfilesModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProfilesModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProfilesModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProfilesModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ProfilesModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ProfilesModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectsModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sortament.cs">
+      <DependentUpon>ProfilesModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="ProfilesModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ProfilesModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="packages.config" />
+    <None Include="ProfilesModel.edmx.diagram">
+      <DependentUpon>ProfilesModel.edmx</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ProfilesModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ProfilesModel.edmx</DependentUpon>
+      <LastGenOutput>ProfilesModel.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="ProfilesModel.edmx.sql" />
+    <Content Include="ProfilesModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ProfilesModel.edmx</DependentUpon>
+      <LastGenOutput>ProfilesModel.cs</LastGenOutput>
+    </Content>
+    <Content Include="SQL\create_Materials.sql" />
+    <Content Include="SQL\create_Profiles.sql" />
+    <Content Include="SQL\dbo.Catalogue.sql" />
+    <Content Include="SQL\dbo.Materials.sql" />
+    <Content Include="SQL\dbo.Sortament.sql" />
+    <Content Include="SQL\insert_Catalogue.sql" />
+    <Content Include="SQL\insert_Profiles_Гнутый равнополочный швеллер по ГОСТ 8278-83 из сталей С239-С245.sql" />
+    <Content Include="SQL\insert_Profiles_Гнутый равнополочный швеллер по ГОСТ 8278-83 из сталей С255-С275.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp дополнительной серии %28Д%29 по ГОСТ 26020-83.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp колонный %28К%29 по ГОСТ 26020-83.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp колонный %28К%29 по СТО АСЧМ 20-93.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp нормальный %28Б%29 по ГОСТ 26020-83.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp нормальный %28Б%29 по СТО АСЧМ 20-93.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp по Р40-93.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp с уклоном полок по ГОСТ 8239-89.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp стальной специальный по ГОСТ 19425-74.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp широкополочный по ГОСТ 26020-83.sql" />
+    <Content Include="SQL\insert_Profiles_Двутавp широкополочный по СТО АСЧМ 20-93.sql" />
+    <Content Include="SQL\insert_Profiles_Квадратные трубы по ГОСТ 12336-66.sql" />
+    <Content Include="SQL\insert_Profiles_Квадратные трубы по ГОСТ 25577-83.sql" />
+    <Content Include="SQL\insert_Profiles_Квадратные трубы по ГОСТ 30245-94.sql" />
+    <Content Include="SQL\insert_Profiles_Квадратные трубы по ГОСТ Р 54157-2010.sql" />
+    <Content Include="SQL\insert_Profiles_Квадратные трубы по ТУ 36-2287-80.sql" />
+    <Content Include="SQL\insert_Profiles_Круглые тpубы по ГОСТ Р 54157-2010.sql" />
+    <Content Include="SQL\insert_Profiles_Прокат стальной горячекатаный квадратный ГОСТ 2591-88.sql" />
+    <Content Include="SQL\insert_Profiles_Прокат стальной горячекатаный круглый ГОСТ 2590-88.sql" />
+    <Content Include="SQL\insert_Profiles_Прямоугольные трубы по ГОСТ 12336-66.sql" />
+    <Content Include="SQL\insert_Profiles_Прямоугольные трубы по ГОСТ 25577-83.sql" />
+    <Content Include="SQL\insert_Profiles_Прямоугольные трубы по ГОСТ 30245-94.sql" />
+    <Content Include="SQL\insert_Profiles_Прямоугольные трубы по ГОСТ Р 54157-2010 %281%29.sql" />
+    <Content Include="SQL\insert_Profiles_Прямоугольные трубы по ГОСТ Р 54157-2010.sql" />
+    <Content Include="SQL\insert_Profiles_Прямоугольные трубы по ТУ 67-2287-80.sql" />
+    <Content Include="SQL\insert_Profiles_Специальные двутавpы по СТО АСЧМ 20-93.sql" />
+    <Content Include="SQL\insert_Profiles_Сталь калиброванная круглая по ГОСТ 7417-75.sql" />
+    <Content Include="SQL\insert_Profiles_Стальные гнутые замкнутые сварные квадратные профили по ГОСТ 30245-2003.sql" />
+    <Content Include="SQL\insert_Profiles_Стальные гнутые замкнутые сварные квадратные профили по ГОСТ 30245-2012.sql" />
+    <Content Include="SQL\insert_Profiles_Стальные гнутые замкнутые сварные прямоугольные профили по ГОСТ 30245-2003.sql" />
+    <Content Include="SQL\insert_Profiles_Стальные гнутые замкнутые сварные прямоугольные профили по ГОСТ 30245-2012.sql" />
+    <Content Include="SQL\insert_Profiles_Тpубы по ГОСТ 10704-91 %28 сокращенные %29.sql" />
+    <Content Include="SQL\insert_Profiles_Тpубы стальные бесшовные горячедеформированные, ГОСТ 8732-78 %282%29.sql" />
+    <Content Include="SQL\insert_Profiles_Тpубы стальные бесшовные горячедеформированные, ГОСТ 8732-78.sql" />
+    <Content Include="SQL\insert_Profiles_Тpубы электросварные прямошовные по ГОСТ 10704-91.sql" />
+    <Content Include="SQL\insert_Profiles_Тавp ШТ по ТУ 14-2-685-86.sql" />
+    <Content Include="SQL\insert_Profiles_Тавpы колонные %28КТ%29 по ТУ 14-2-685-86.sql" />
+    <Content Include="SQL\insert_Profiles_Трубы стальные квадратные по ГОСТ 8639-68.sql" />
+    <Content Include="SQL\insert_Profiles_Трубы стальные квадратные по ГОСТ 8639-82.sql" />
+    <Content Include="SQL\insert_Profiles_Трубы стальные прямоугольные по ГОСТ 8645-68.sql" />
+    <Content Include="SQL\insert_Profiles_Уголок неравнополочный по ГОСТ 8510-86.sql" />
+    <Content Include="SQL\insert_Profiles_Уголок равнополочный по ГОСТ 8509-93.sql" />
+    <Content Include="SQL\insert_Profiles_Швеллеp %28В%29 по ГОСТ 5267.1-90.sql" />
+    <Content Include="SQL\insert_Profiles_Швеллеp с паpаллельными гpанями полок по ГОСТ 8240-89.sql" />
+    <Content Include="SQL\insert_Profiles_Швеллеp с паpаллельными гpанями полок по ГОСТ 8240-97.sql" />
+    <Content Include="SQL\insert_Profiles_Швеллеp с уклоном полок по ГОСТ 8240-89.sql" />
+    <Content Include="SQL\insert_Profiles_Швеллеp с уклоном полок по ГОСТ 8240-97.sql" />
+    <Content Include="SQL\insert_Profiles_Швеллеp стальной специальный по ГОСТ 19425-74.sql" />
+    <Content Include="SQL\insert_Profiles_Швеллеpы легкой серии с параллельными гранями полок по ГОСТ 8240-97.sql" />
+    <Content Include="SQL\insert_Profiles_Швеллеpы специальные  по ГОСТ 8240-97.sql" />
+    <Content Include="SQL\insert_Profiles_Швеллеpы экономичные с паpаллельными гpанями полок по ГОСТ 8240-97.sql" />
+    <Content Include="SQL\insert_Sortament.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAdapter\DataAdapter.csproj">
+      <Project>{8fbd46b4-f00b-4e5c-953e-37f6edfef1e9}</Project>
+      <Name>DataAdapter</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
